@@ -6,27 +6,16 @@
 //
 
 import SwiftUI
-import SwiftData
 
 @main
 struct PingaNoteApp: App {
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Item.self,
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
-    }()
-
+    // Initialize HomeViewModel with injected dependencies if necessary
+    @StateObject private var homeViewModel = HomeViewModel()
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            HomeView()
+                .environmentObject(homeViewModel) // Inject HomeViewModel into the environment
         }
-        .modelContainer(sharedModelContainer)
     }
 }
